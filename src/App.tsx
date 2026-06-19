@@ -9,6 +9,9 @@ type Page = "list" | "detail" | "create";
 
 function App() {
   const [currentPage, setCurrentPage] = useState<Page>("list");
+  const [selectedContactId, setSelectedContactId] = useState<number | null>(
+    null,
+  );
   const [contacts, setContacts] = useState<Contact[]>([
     {
       id: 1,
@@ -40,6 +43,16 @@ function App() {
     setContacts((prev) => [...prev, newContact]);
   };
 
+  // id情報を編集ボタンに持たせStateに保存して、ページStateも変更してページ遷移（風）
+  const handleSelectContact = (id: number) => {
+    setSelectedContactId(id);
+    setCurrentPage("detail");
+  };
+
+  // 編集するContactのidを識別
+  const selectedContact =
+    contacts.find((c) => c.id === selectedContactId) ?? null;
+
   return (
     <>
       <button onClick={() => setCurrentPage("create")}>
@@ -50,15 +63,23 @@ function App() {
         お問い合わせ一覧ページへ遷移
       </button>
 
-      <button onClick={() => setCurrentPage("detail")}>
+      {/* TODO: 削除予定 */}
+      {/* <button onClick={() => setCurrentPage("detail")}>
         お問い合わせ詳細ページへ遷移
-      </button>
+      </button> */}
 
-      {currentPage === "list" && <ContactListPage contacts={contacts} />}
+      {currentPage === "list" && (
+        <ContactListPage contacts={contacts} onEdit={handleSelectContact} />
+      )}
 
       {currentPage === "create" && <ContactCreatePage onAdd={handleAdd} />}
 
-      {currentPage === "detail" && <ContactDetailPage />}
+      {currentPage === "detail" && selectedContact && (
+        <ContactDetailPage
+          contact={selectedContact}
+          onBack={() => setCurrentPage("list")}
+        />
+      )}
     </>
   );
 }

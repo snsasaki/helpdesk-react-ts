@@ -2,9 +2,10 @@ import type { Contact } from "../types/Contact";
 
 type Props = {
   contact: Contact;
+  onEdit: (id: number) => void;
 };
 
-function ContactItem({ contact }: Props) {
+function ContactItem({ contact, onEdit }: Props) {
   const statusLabels = {
     pending: "未対応",
     in_progress: "対応中",
@@ -16,6 +17,9 @@ function ContactItem({ contact }: Props) {
       <p>{contact.title}</p>
       <p>{contact.detail}</p>
       <p>{statusLabels[contact.status]}</p>
+      <button type="button" onClick={() => onEdit(contact.id)}>
+        編集
+      </button>
     </li>
   );
 }
