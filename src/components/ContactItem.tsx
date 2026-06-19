@@ -13,7 +13,6 @@ function ContactItem({ contact, onEdit }: Props) {
   };
   return (
     <li>
-      {/* TODO: タイトルをクリックすると詳細ページに移行する → 値を変える */}
       <p>{contact.title}</p>
       <p>{contact.detail}</p>
       <p>{statusLabels[contact.status]}</p>
