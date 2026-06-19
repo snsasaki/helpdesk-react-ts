@@ -3,7 +3,11 @@ import ContactForm from "./components/ContactForm";
 import type { Contact } from "./types/Contact";
 import ContactItem from "./components/ContactItem";
 
+// ページ切り替え用types
+// type Page = "list" | "detail" | "create";
+
 function App() {
+  // const [currentPage, setCurrentPage] = useState<Page>("list");
   const [contacts, setContacts] = useState<Contact[]>([
     {
       id: 1,
