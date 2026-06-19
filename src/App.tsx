@@ -54,17 +54,11 @@ function App() {
         お問い合わせ詳細ページへ遷移
       </button>
 
-      {currentPage === "list" && <ContactListPage />}
+      {currentPage === "list" && <ContactListPage contacts={contacts} />}
 
       {currentPage === "create" && <ContactCreatePage onAdd={handleAdd} />}
 
       {currentPage === "detail" && <ContactDetailPage />}
-
-      {/* <ul>
-        {contacts.map((contact) => (
-          <ContactItem key={contact.id} contact={contact} />
-        ))}
-      </ul> */}
     </>
   );
 }
