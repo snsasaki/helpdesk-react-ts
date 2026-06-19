@@ -1,13 +1,14 @@
 import { useState } from "react";
-import ContactForm from "./components/ContactForm";
 import type { Contact } from "./types/Contact";
-import ContactItem from "./components/ContactItem";
+import ContactCreatePage from "./pages/ContactCreatePage";
+import ContactListPage from "./pages/ContactListPage";
+import ContactDetailPage from "./pages/ContactDetailPage";
 
 // ページ切り替え用types
-// type Page = "list" | "detail" | "create";
+type Page = "list" | "detail" | "create";
 
 function App() {
-  // const [currentPage, setCurrentPage] = useState<Page>("list");
+  const [currentPage, setCurrentPage] = useState<Page>("list");
   const [contacts, setContacts] = useState<Contact[]>([
     {
       id: 1,
@@ -38,15 +39,32 @@ function App() {
     };
     setContacts((prev) => [...prev, newContact]);
   };
+
   return (
     <>
-      <h1>ヘルプデスク</h1>
-      <ContactForm onAdd={handleAdd} />
-      <ul>
+      <button onClick={() => setCurrentPage("create")}>
+        お問い合わせ登録ページへ遷移
+      </button>
+
+      <button onClick={() => setCurrentPage("list")}>
+        お問い合わせ一覧ページへ遷移
+      </button>
+
+      <button onClick={() => setCurrentPage("detail")}>
+        お問い合わせ詳細ページへ遷移
+      </button>
+
+      {currentPage === "list" && <ContactListPage />}
+
+      {currentPage === "create" && <ContactCreatePage onAdd={handleAdd} />}
+
+      {currentPage === "detail" && <ContactDetailPage />}
+
+      {/* <ul>
         {contacts.map((contact) => (
           <ContactItem key={contact.id} contact={contact} />
         ))}
-      </ul>
+      </ul> */}
     </>
   );
 }
