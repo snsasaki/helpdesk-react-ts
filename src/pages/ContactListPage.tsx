@@ -3,12 +3,34 @@ import type { Contact, ContactStatus } from "../types/Contact";
 
 import { FormControl, MenuItem, Select, Typography } from "@mui/material";
 
+type StatusFilter = ContactStatus | "all";
+
 type Props = {
   contacts: Contact[];
-  statusFilter: ContactStatus | "all";
+  statusFilter: StatusFilter;
   onFilterChange: (status: ContactStatus | "all") => void;
   onEdit: (id: number) => void;
 };
+
+const statusFilterStyles: Record<StatusFilter, { color: string; bg: string }> =
+  {
+    all: {
+      color: "#374151",
+      bg: "#f3f4f6",
+    },
+    pending: {
+      color: "#92400e",
+      bg: "#fef3c7",
+    },
+    in_progress: {
+      color: "#075985",
+      bg: "#eof2fe",
+    },
+    completed: {
+      color: "#166534",
+      bg: "#dcfce7",
+    },
+  };
 
 function ContactListPage({
   contacts,
@@ -16,6 +38,8 @@ function ContactListPage({
   onFilterChange,
   onEdit,
 }: Props) {
+  const selectedStyle = statusFilterStyles[statusFilter];
+
   return (
     <>
       <Typography variant="h4" component="h1">
@@ -24,9 +48,15 @@ function ContactListPage({
       <FormControl size="small" sx={{ minWidth: 180 }}>
         <Select
           value={statusFilter}
-          onChange={(e) =>
-            onFilterChange(e.target.value as ContactStatus | "all")
-          }
+          onChange={(e) => onFilterChange(e.target.value as StatusFilter)}
+          sx={{
+            color: selectedStyle.color,
+            backgroundColor: selectedStyle.bg,
+            fontWeight: 600,
+            "& .MuiSelecte-icon": {
+              color: selectedStyle.color,
+            },
+          }}
         >
           <MenuItem value="all">すべて</MenuItem>
           <MenuItem value="pending">未対応</MenuItem>
