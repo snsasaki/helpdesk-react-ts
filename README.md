@@ -54,3 +54,5 @@ http://localhost:5173
 - handlerをhooksに切り出し
 
 - layoutに切り出し
+
+- ローカルストレージに保存
