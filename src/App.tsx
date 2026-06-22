@@ -4,7 +4,7 @@ import ContactCreatePage from "./pages/ContactCreatePage";
 import ContactListPage from "./pages/ContactListPage";
 import ContactDetailPage from "./pages/ContactDetailPage";
 
-import { Container, Paper, Stack } from "@mui/material";
+import { Button, Container, Paper, Stack } from "@mui/material";
 
 // ページ切り替え用types
 type Page = "list" | "detail" | "create";
@@ -76,13 +76,19 @@ function App() {
     <Container maxWidth="lg" sx={{ py: 6 }}>
       <Paper elevation={2} sx={{ p: 4, borderRadius: 3 }}>
         <Stack spacing={3}>
-          <button onClick={() => setCurrentPage("create")}>
+          <Button
+            variant={currentPage === "create" ? "contained" : "outlined"}
+            onClick={() => setCurrentPage("create")}
+          >
             お問い合わせ登録ページへ遷移
-          </button>
+          </Button>
 
-          <button onClick={() => setCurrentPage("list")}>
+          <Button
+            variant={currentPage === "list" ? "contained" : "outlined"}
+            onClick={() => setCurrentPage("list")}
+          >
             お問い合わせ一覧ページへ遷移
-          </button>
+          </Button>
 
           {currentPage === "list" && (
             <ContactListPage
