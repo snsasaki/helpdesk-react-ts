@@ -31,6 +31,7 @@ function ContactForm({ onAdd }: Props) {
           label="タイトル"
           placeholder="お問い合わせのタイトルを入力してください"
           fullWidth
+          required
           error={Boolean(errors.title)}
           helperText={errors.title?.message}
           {...register("title", {
