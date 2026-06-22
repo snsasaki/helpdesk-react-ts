@@ -59,6 +59,9 @@ function ContactForm({ onAdd }: Props) {
             })}
             placeholder="お問い合わせ内容を入力してください"
           />
+          {errors.detail && (
+            <p style={{ color: "red" }}>{errors.detail.message}</p>
+          )}
         </li>
       </ul>
 
