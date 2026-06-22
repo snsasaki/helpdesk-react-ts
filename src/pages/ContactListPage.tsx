@@ -24,7 +24,7 @@ const statusFilterStyles: Record<StatusFilter, { color: string; bg: string }> =
     },
     in_progress: {
       color: "#075985",
-      bg: "#eof2fe",
+      bg: "#e0f2fe",
     },
     completed: {
       color: "#166534",
@@ -53,7 +53,7 @@ function ContactListPage({
             color: selectedStyle.color,
             backgroundColor: selectedStyle.bg,
             fontWeight: 600,
-            "& .MuiSelecte-icon": {
+            "& .MuiSelect-icon": {
               color: selectedStyle.color,
             },
           }}
