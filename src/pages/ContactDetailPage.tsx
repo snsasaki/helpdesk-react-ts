@@ -1,17 +1,20 @@
-import type { Contact } from "../types/Contact";
+import type { Contact, ContactStatus } from "../types/Contact";
 
 type Props = {
   contact: Contact;
   onBack: () => void;
-  onStatusChange: (id: number, status: Contact["status"]) => void;
+  onStatusChange: (id: number, status: ContactStatus) => void;
 };
 
 function ContactDetailPage({ contact, onBack, onStatusChange }: Props) {
-  const statusOptions = [
+  const statusOptions: {
+    value: ContactStatus;
+    label: string;
+  }[] = [
     { value: "pending", label: "未対応" },
     { value: "in_progress", label: "対応中" },
     { value: "completed", label: "完了" },
-  ] as const;
+  ];
   return (
     <>
       {/* TODO: 情報がデフォルト入力されているフォームが表示される */}

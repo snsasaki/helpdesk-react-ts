@@ -1,4 +1,4 @@
-type ContactStatus = "pending" | "in_progress" | "completed";
+export type ContactStatus = "pending" | "in_progress" | "completed";
 
 export type Contact = {
   id: number;
