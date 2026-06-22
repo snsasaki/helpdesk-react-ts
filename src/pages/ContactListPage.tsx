@@ -69,6 +69,7 @@ function ContactListPage({
             color: selectedStyle.color,
             backgroundColor: selectedStyle.bg,
             fontWeight: 600,
+            mb: 3,
             "& .MuiSelect-icon": {
               color: selectedStyle.color,
             },
@@ -81,6 +82,7 @@ function ContactListPage({
         </Select>
         <Select
           value={sortOrder}
+          sx={{ mb: 3 }}
           onChange={(e) => onSortOrderChange(e.target.value as SortOrder)}
         >
           <MenuItem value="newest">新しい順</MenuItem>
