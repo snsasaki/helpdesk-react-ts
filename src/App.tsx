@@ -4,6 +4,8 @@ import ContactCreatePage from "./pages/ContactCreatePage";
 import ContactListPage from "./pages/ContactListPage";
 import ContactDetailPage from "./pages/ContactDetailPage";
 
+import { Container, Paper, Stack } from "@mui/material";
+
 // ページ切り替え用types
 type Page = "list" | "detail" | "create";
 
@@ -71,39 +73,38 @@ function App() {
     contacts.find((c) => c.id === selectedContactId) ?? null;
 
   return (
-    <>
-      <button onClick={() => setCurrentPage("create")}>
-        お問い合わせ登録ページへ遷移
-      </button>
+    <Container maxWidth="lg" sx={{ py: 6 }}>
+      <Paper elevation={2} sx={{ p: 4, borderRadius: 3 }}>
+        <Stack spacing={3}>
+          <button onClick={() => setCurrentPage("create")}>
+            お問い合わせ登録ページへ遷移
+          </button>
 
-      <button onClick={() => setCurrentPage("list")}>
-        お問い合わせ一覧ページへ遷移
-      </button>
+          <button onClick={() => setCurrentPage("list")}>
+            お問い合わせ一覧ページへ遷移
+          </button>
 
-      {/* TODO: 削除予定 */}
-      {/* <button onClick={() => setCurrentPage("detail")}>
-        お問い合わせ詳細ページへ遷移
-      </button> */}
+          {currentPage === "list" && (
+            <ContactListPage
+              contacts={filteredContacts}
+              statusFilter={statusFilter}
+              onFilterChange={setStatusFilter}
+              onEdit={handleSelectContact}
+            />
+          )}
 
-      {currentPage === "list" && (
-        <ContactListPage
-          contacts={filteredContacts}
-          statusFilter={statusFilter}
-          onFilterChange={setStatusFilter}
-          onEdit={handleSelectContact}
-        />
-      )}
+          {currentPage === "create" && <ContactCreatePage onAdd={handleAdd} />}
 
-      {currentPage === "create" && <ContactCreatePage onAdd={handleAdd} />}
-
-      {currentPage === "detail" && selectedContact && (
-        <ContactDetailPage
-          contact={selectedContact}
-          onBack={() => setCurrentPage("list")}
-          onStatusChange={handleStatusChange}
-        />
-      )}
-    </>
+          {currentPage === "detail" && selectedContact && (
+            <ContactDetailPage
+              contact={selectedContact}
+              onBack={() => setCurrentPage("list")}
+              onStatusChange={handleStatusChange}
+            />
+          )}
+        </Stack>
+      </Paper>
+    </Container>
   );
 }
 
