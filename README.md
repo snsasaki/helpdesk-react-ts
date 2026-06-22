@@ -46,3 +46,11 @@ $ npm run dev
 ```
 
 http://localhost:5173
+
+### 今回できなかったこと
+
+- Zodを使ったバリデーション
+
+- handlerをhooksに切り出し
+
+- layoutに切り出し
