@@ -77,17 +77,16 @@ function App() {
       <Paper elevation={2} sx={{ p: 4, borderRadius: 3 }}>
         <Stack spacing={3}>
           <Button
-            variant={currentPage === "create" ? "contained" : "outlined"}
-            onClick={() => setCurrentPage("create")}
-          >
-            お問い合わせ登録ページへ遷移
-          </Button>
-
-          <Button
             variant={currentPage === "list" ? "contained" : "outlined"}
             onClick={() => setCurrentPage("list")}
           >
-            お問い合わせ一覧ページへ遷移
+            お問い合わせ一覧
+          </Button>
+          <Button
+            variant={currentPage === "create" ? "contained" : "outlined"}
+            onClick={() => setCurrentPage("create")}
+          >
+            お問い合わせフォーム
           </Button>
 
           {currentPage === "list" && (
