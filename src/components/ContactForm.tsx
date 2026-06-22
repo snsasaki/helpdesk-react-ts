@@ -12,7 +12,12 @@ type Props = {
 };
 
 function ContactForm({ onAdd }: Props) {
-  const { register, handleSubmit, reset } = useForm<FormData>({
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<FormData>({
     defaultValues: {
       title: "",
       detail: "",
@@ -30,9 +35,14 @@ function ContactForm({ onAdd }: Props) {
       <ul>
         <li>
           <input
-            {...register("title")}
+            {...register("title", {
+              required: "タイトルの入力は必須です",
+            })}
             placeholder="お問い合わせのタイトルを入力してください"
           />
+          {errors.title && (
+            <p style={{ color: "red" }}>{errors.title.message}</p>
+          )}
         </li>
 
         <li>
