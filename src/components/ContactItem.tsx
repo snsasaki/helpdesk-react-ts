@@ -1,25 +1,69 @@
 import type { Contact } from "../types/Contact";
 
+import {
+  Button,
+  Card,
+  CardActions,
+  CardContent,
+  Chip,
+  Stack,
+  Typography,
+} from "@mui/material";
+
 type Props = {
   contact: Contact;
   onEdit: (id: number) => void;
 };
 
+const statusConfig = {
+  pending: {
+    label: "未対応",
+    color: "warning",
+  },
+  in_progress: {
+    label: "対応中",
+    color: "info",
+  },
+  completed: {
+    label: "完了",
+    color: "success",
+  },
+} as const;
+
 function ContactItem({ contact, onEdit }: Props) {
-  const statusLabels = {
-    pending: "未対応",
-    in_progress: "対応中",
-    completed: "完了",
-  };
+  const status = statusConfig[contact.status];
+
   return (
-    <li>
-      <p>{contact.title}</p>
-      <p>{contact.detail}</p>
-      <p>{statusLabels[contact.status]}</p>
-      <button type="button" onClick={() => onEdit(contact.id)}>
-        編集
-      </button>
-    </li>
+    <Card variant="outlined">
+      <CardContent>
+        <Stack spacing={1}>
+          <Stack
+            direction="row"
+            spacing={1}
+            sx={{
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
+            <Typography variant="h6" component="h2">
+              {contact.title}
+            </Typography>
+
+            <Chip label={status.label} color={status.color} size="small" />
+          </Stack>
+
+          <Typography variant="body2" color="text.secondary">
+            {contact.detail}
+          </Typography>
+        </Stack>
+      </CardContent>
+
+      <CardActions>
+        <Button size="small" onClick={() => onEdit(contact.id)}>
+          詳細を見る
+        </Button>
+      </CardActions>
+    </Card>
   );
 }
 
