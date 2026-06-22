@@ -1,51 +1,48 @@
-import { useState } from "react";
-import type { Contact } from "../types/Contact";
+import type { ContactStatus } from "../types/Contact";
+import { useForm } from "react-hook-form";
+
+type FormData = {
+  title: string;
+  detail: string;
+  status: ContactStatus;
+};
 
 type Props = {
-  // contact: Contact;
-  onAdd: (contact: Omit<Contact, "id">) => void;
+  onAdd: (contact: FormData) => void;
 };
 
 function ContactForm({ onAdd }: Props) {
-  const [title, setTitle] = useState("");
-  const [detail, setDetail] = useState("");
-
-  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setTitle(e.target.value);
-  };
-
-  const handleDetailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setDetail(e.target.value);
-  };
-  const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    onAdd({
-      title,
-      detail,
+  const { register, handleSubmit, reset } = useForm<FormData>({
+    defaultValues: {
+      title: "",
+      detail: "",
       status: "pending",
-    });
-    setTitle("");
-    setDetail("");
+    },
+  });
+
+  const onSubmit = (data: FormData) => {
+    onAdd(data);
+    reset();
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit(onSubmit)}>
       <ul>
         <li>
           <input
-            value={title}
-            onChange={handleTitleChange}
+            {...register("title")}
             placeholder="お問い合わせのタイトルを入力してください"
           />
         </li>
+
         <li>
           <input
-            value={detail}
-            onChange={handleDetailChange}
+            {...register("detail")}
             placeholder="お問い合わせ内容を入力してください"
           />
         </li>
       </ul>
+
       <button type="submit">追加</button>
     </form>
   );
