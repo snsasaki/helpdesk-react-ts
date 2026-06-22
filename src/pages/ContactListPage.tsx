@@ -1,7 +1,13 @@
 import ContactItem from "../components/ContactItem";
 import type { Contact, ContactStatus } from "../types/Contact";
 
-import { FormControl, MenuItem, Select, Typography } from "@mui/material";
+import {
+  FormControl,
+  MenuItem,
+  Select,
+  Stack,
+  Typography,
+} from "@mui/material";
 
 type StatusFilter = ContactStatus | "all";
 
@@ -47,6 +53,10 @@ function ContactListPage({
       <Typography variant="h4" component="h1">
         お問い合わせ一覧
       </Typography>
+      <Stack>
+        未完了残り:{" "}
+        {contacts.filter((contact) => contact.status !== "completed").length} 件
+      </Stack>
       <FormControl size="small" sx={{ minWidth: 180 }}>
         <Select
           value={statusFilter}
