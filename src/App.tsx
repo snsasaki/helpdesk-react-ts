@@ -68,6 +68,16 @@ function App() {
     );
   };
 
+  // お問い合わせ削除
+  const handleDelete = (id: number) => {
+    setContacts((prev) => prev.filter((contact) => contact.id != id));
+
+    if (selectedContactId === id) {
+      setSelectedContactId(null);
+      setCurrentPage("list");
+    }
+  };
+
   // 編集するContactのidを識別
   const selectedContact =
     contacts.find((c) => c.id === selectedContactId) ?? null;
@@ -95,6 +105,7 @@ function App() {
               statusFilter={statusFilter}
               onFilterChange={setStatusFilter}
               onEdit={handleSelectContact}
+              onDelete={handleDelete}
             />
           )}
 

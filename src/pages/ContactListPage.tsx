@@ -10,6 +10,7 @@ type Props = {
   statusFilter: StatusFilter;
   onFilterChange: (status: ContactStatus | "all") => void;
   onEdit: (id: number) => void;
+  onDelete: (id: number) => void;
 };
 
 const statusFilterStyles: Record<StatusFilter, { color: string; bg: string }> =
@@ -37,6 +38,7 @@ function ContactListPage({
   statusFilter,
   onFilterChange,
   onEdit,
+  onDelete,
 }: Props) {
   const selectedStyle = statusFilterStyles[statusFilter];
 
@@ -63,11 +65,14 @@ function ContactListPage({
           <MenuItem value="in_progress">対応中</MenuItem>
           <MenuItem value="completed">完了</MenuItem>
         </Select>
-        <ul>
-          {contacts.map((contact) => (
-            <ContactItem key={contact.id} contact={contact} onEdit={onEdit} />
-          ))}
-        </ul>
+        {contacts.map((contact) => (
+          <ContactItem
+            key={contact.id}
+            contact={contact}
+            onEdit={onEdit}
+            onDelete={onDelete}
+          />
+        ))}
       </FormControl>
     </>
   );

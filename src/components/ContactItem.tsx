@@ -13,6 +13,7 @@ import {
 type Props = {
   contact: Contact;
   onEdit: (id: number) => void;
+  onDelete: (id: number) => void;
 };
 
 const statusConfig = {
@@ -30,7 +31,7 @@ const statusConfig = {
   },
 } as const;
 
-function ContactItem({ contact, onEdit }: Props) {
+function ContactItem({ contact, onEdit, onDelete }: Props) {
   const status = statusConfig[contact.status];
 
   return (
@@ -58,9 +59,21 @@ function ContactItem({ contact, onEdit }: Props) {
         </Stack>
       </CardContent>
 
-      <CardActions>
-        <Button size="small" onClick={() => onEdit(contact.id)}>
+      <CardActions sx={{ justifyContent: "space-between" }}>
+        <Button
+          size="small"
+          variant="contained"
+          onClick={() => onEdit(contact.id)}
+        >
           詳細を見る
+        </Button>
+        <Button
+          size="small"
+          variant="outlined"
+          color="error"
+          onClick={() => onDelete(contact.id)}
+        >
+          削除
         </Button>
       </CardActions>
     </Card>
