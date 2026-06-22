@@ -1,5 +1,5 @@
 import { useState } from "react";
-import type { Contact, ContactStatus } from "./types/Contact";
+import type { Contact, ContactFormData, ContactStatus } from "./types/Contact";
 import ContactCreatePage from "./pages/ContactCreatePage";
 import ContactListPage from "./pages/ContactListPage";
 import ContactDetailPage from "./pages/ContactDetailPage";
@@ -44,7 +44,7 @@ function App() {
       ? contacts
       : contacts.filter((contact) => contact.status === statusFilter);
 
-  const handleAdd = (contact: Omit<Contact, "id">) => {
+  const handleAdd = (contact: ContactFormData) => {
     const newContact: Contact = {
       id: Date.now(),
       title: contact.title,

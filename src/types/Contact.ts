@@ -6,3 +6,8 @@ export type Contact = {
   detail: string;
   status: ContactStatus;
 };
+
+export type ContactFormData = {
+  title: string;
+  detail: string;
+};

@@ -1,8 +1,8 @@
 import ContactForm from "../components/ContactForm";
-import type { Contact } from "../types/Contact";
+import type { ContactFormData } from "../types/Contact";
 
 type Props = {
-  onAdd: (contact: Omit<Contact, "id">) => void;
+  onAdd: (contact: ContactFormData) => void;
 };
 
 function ContactCreatePage({ onAdd }: Props) {
