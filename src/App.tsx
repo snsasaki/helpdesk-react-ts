@@ -1,5 +1,5 @@
 import { useState } from "react";
-import type { Contact } from "./types/Contact";
+import type { Contact, ContactStatus } from "./types/Contact";
 import ContactCreatePage from "./pages/ContactCreatePage";
 import ContactListPage from "./pages/ContactListPage";
 import ContactDetailPage from "./pages/ContactDetailPage";
@@ -32,6 +32,15 @@ function App() {
       status: "completed",
     },
   ]);
+
+  const [statusFilter, setStatusFilter] = useState<ContactStatus | "all">(
+    "all",
+  );
+
+  const filteredContacts =
+    statusFilter === "all"
+      ? contacts
+      : contacts.filter((contact) => contact.status === statusFilter);
 
   const handleAdd = (contact: Omit<Contact, "id">) => {
     const newContact: Contact = {
@@ -77,7 +86,12 @@ function App() {
       </button> */}
 
       {currentPage === "list" && (
-        <ContactListPage contacts={contacts} onEdit={handleSelectContact} />
+        <ContactListPage
+          contacts={filteredContacts}
+          statusFilter={statusFilter}
+          onFilterChange={setStatusFilter}
+          onEdit={handleSelectContact}
+        />
       )}
 
       {currentPage === "create" && <ContactCreatePage onAdd={handleAdd} />}
