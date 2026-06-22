@@ -1,5 +1,5 @@
 import ContactItem from "../components/ContactItem";
-import type { Contact, ContactStatus } from "../types/Contact";
+import type { Contact, ContactStatus, SortOrder } from "../types/Contact";
 
 import {
   FormControl,
@@ -14,7 +14,9 @@ type StatusFilter = ContactStatus | "all";
 type Props = {
   contacts: Contact[];
   statusFilter: StatusFilter;
-  onFilterChange: (status: ContactStatus | "all") => void;
+  sortOrder: SortOrder;
+  onFilterChange: (status: StatusFilter) => void;
+  onSortOrderChange: (sortOrder: SortOrder) => void;
   onEdit: (id: number) => void;
   onDelete: (id: number) => void;
 };
@@ -42,7 +44,9 @@ const statusFilterStyles: Record<StatusFilter, { color: string; bg: string }> =
 function ContactListPage({
   contacts,
   statusFilter,
+  sortOrder,
   onFilterChange,
+  onSortOrderChange,
   onEdit,
   onDelete,
 }: Props) {
@@ -74,6 +78,13 @@ function ContactListPage({
           <MenuItem value="pending">未対応</MenuItem>
           <MenuItem value="in_progress">対応中</MenuItem>
           <MenuItem value="completed">完了</MenuItem>
+        </Select>
+        <Select
+          value={sortOrder}
+          onChange={(e) => onSortOrderChange(e.target.value as SortOrder)}
+        >
+          <MenuItem value="newest">新しい順</MenuItem>
+          <MenuItem value="oldest">古い順</MenuItem>
         </Select>
         {contacts.map((contact) => (
           <ContactItem

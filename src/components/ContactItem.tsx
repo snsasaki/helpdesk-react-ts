@@ -48,6 +48,9 @@ function ContactItem({ contact, onEdit, onDelete }: Props) {
           >
             <Typography variant="h6" component="h2">
               {contact.title}
+              <Typography variant="caption" color="text.secondary">
+                {new Date(contact.createdAt).toLocaleDateString("ja-JP")}
+              </Typography>
             </Typography>
 
             <Chip label={status.label} color={status.color} size="small" />
@@ -59,7 +62,7 @@ function ContactItem({ contact, onEdit, onDelete }: Props) {
         </Stack>
       </CardContent>
 
-      <CardActions sx={{ justifyContent: "space-between" }}>
+      <CardActions sx={{ justifyContent: "flex-end" }}>
         <Button
           size="small"
           variant="contained"

@@ -1,5 +1,10 @@
 import { useState } from "react";
-import type { Contact, ContactFormData, ContactStatus } from "./types/Contact";
+import type {
+  Contact,
+  ContactFormData,
+  ContactStatus,
+  SortOrder,
+} from "./types/Contact";
 import ContactCreatePage from "./pages/ContactCreatePage";
 import ContactListPage from "./pages/ContactListPage";
 import ContactDetailPage from "./pages/ContactDetailPage";
@@ -20,18 +25,21 @@ function App() {
       title: "ログインできない",
       detail: "パスワードを忘れました",
       status: "pending",
+      createdAt: "2026-06-20T10:00:00.000Z",
     },
     {
       id: 2,
       title: "画面が表示されない",
       detail: "トップページが真っ白です",
       status: "in_progress",
+      createdAt: "2026-06-21T10:00:00.000Z",
     },
     {
       id: 3,
       title: "問い合わせ完了",
       detail: "解決済みです",
       status: "completed",
+      createdAt: "2026-06-23T10:00:00.000Z",
     },
   ]);
 
@@ -39,10 +47,19 @@ function App() {
     "all",
   );
 
+  const [sortOrder, setSortOrder] = useState<SortOrder>("newest");
+
   const filteredContacts =
     statusFilter === "all"
       ? contacts
       : contacts.filter((contact) => contact.status === statusFilter);
+
+  const sortedContacts = [...filteredContacts].sort((a, b) => {
+    const aTime = new Date(a.createdAt).getTime();
+    const bTime = new Date(b.createdAt).getTime();
+
+    return sortOrder === "newest" ? bTime - aTime : aTime - bTime;
+  });
 
   const handleAdd = (contact: ContactFormData) => {
     const newContact: Contact = {
@@ -50,6 +67,7 @@ function App() {
       title: contact.title,
       detail: contact.detail,
       status: "pending",
+      createdAt: new Date().toISOString(),
     };
     setContacts((prev) => [...prev, newContact]);
   };
@@ -101,9 +119,11 @@ function App() {
 
           {currentPage === "list" && (
             <ContactListPage
-              contacts={filteredContacts}
+              contacts={sortedContacts}
               statusFilter={statusFilter}
+              sortOrder={sortOrder}
               onFilterChange={setStatusFilter}
+              onSortOrderChange={setSortOrder}
               onEdit={handleSelectContact}
               onDelete={handleDelete}
             />
