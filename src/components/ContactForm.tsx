@@ -37,6 +37,10 @@ function ContactForm({ onAdd }: Props) {
           <input
             {...register("title", {
               required: "タイトルの入力は必須です",
+              minLength: {
+                value: 3,
+                message: "タイトルは3文字以上で入力してください",
+              },
             })}
             placeholder="お問い合わせのタイトルを入力してください"
           />
@@ -47,7 +51,12 @@ function ContactForm({ onAdd }: Props) {
 
         <li>
           <input
-            {...register("detail")}
+            {...register("detail", {
+              maxLength: {
+                value: 50,
+                message: "詳細は50文字以内で入力してください",
+              },
+            })}
             placeholder="お問い合わせ内容を入力してください"
           />
         </li>
