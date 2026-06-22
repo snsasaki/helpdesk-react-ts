@@ -49,6 +49,14 @@ function App() {
     setCurrentPage("detail");
   };
 
+  const handleStatusChange = (id: number, status: Contact["status"]) => {
+    setContacts((prev) =>
+      prev.map((contact) =>
+        contact.id === id ? { ...contact, status } : contact,
+      ),
+    );
+  };
+
   // 編集するContactのidを識別
   const selectedContact =
     contacts.find((c) => c.id === selectedContactId) ?? null;
@@ -78,6 +86,7 @@ function App() {
         <ContactDetailPage
           contact={selectedContact}
           onBack={() => setCurrentPage("list")}
+          onStatusChange={handleStatusChange}
         />
       )}
     </>
