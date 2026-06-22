@@ -34,7 +34,7 @@ function ContactDetailPage({ contact, onBack, onStatusChange }: Props) {
   return (
     <Stack spacing={2}>
       <Typography variant="h4" component="h1">
-        詳細ページです
+        お問い合わせ詳細
       </Typography>
 
       <Typography>{contact.title}</Typography>
