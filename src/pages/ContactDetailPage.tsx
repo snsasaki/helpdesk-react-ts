@@ -1,3 +1,14 @@
+import {
+  Button,
+  CardActions,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  Stack,
+  Typography,
+} from "@mui/material";
+import type { SelectChangeEvent } from "@mui/material/Select";
 import type { Contact, ContactStatus } from "../types/Contact";
 
 type Props = {
@@ -15,31 +26,44 @@ function ContactDetailPage({ contact, onBack, onStatusChange }: Props) {
     { value: "in_progress", label: "対応中" },
     { value: "completed", label: "完了" },
   ];
+
+  const handleStatusChange = (event: SelectChangeEvent<ContactStatus>) => {
+    onStatusChange(contact.id, event.target.value as ContactStatus);
+  };
+
   return (
-    <>
-      {/* TODO: 情報がデフォルト入力されているフォームが表示される */}
-      <h1>詳細ページです</h1>
-      <p>{contact.title}</p>
-      <p>{contact.detail}</p>
-      <div>
-        <label htmlFor="status">完了状態</label>
-        <select
+    <Stack spacing={2}>
+      <Typography variant="h4" component="h1">
+        詳細ページです
+      </Typography>
+
+      <Typography>{contact.title}</Typography>
+
+      <Typography>{contact.detail}</Typography>
+
+      <FormControl size="small">
+        <InputLabel id="status-label">完了状態</InputLabel>
+        <Select
+          labelId="status-label"
           id="status"
           value={contact.status}
-          onChange={(e) =>
-            onStatusChange(contact.id, e.target.value as Contact["status"])
-          }
+          label="完了状態"
+          onChange={handleStatusChange}
         >
           {statusOptions.map((option) => (
-            <option key={option.value} value={option.value}>
+            <MenuItem key={option.value} value={option.value}>
               {option.label}
-            </option>
+            </MenuItem>
           ))}
-        </select>
-      </div>
+        </Select>
+      </FormControl>
 
-      <button onClick={onBack}>戻る</button>
-    </>
+      <CardActions>
+        <Button variant="outlined" onClick={onBack}>
+          戻る
+        </Button>
+      </CardActions>
+    </Stack>
   );
 }
 
