@@ -5,6 +5,19 @@
 - 社内問い合わせ管理アプリ
 - react-tsの学習用リポジトリ
 
+## プロジェクト構成
+
+src/
+├── lib/
+│ └── api.ts ← 追加：axios インスタンス
+├── api/
+│ └── contacts.ts ← 追加：API 呼び出し関数
+├── hooks/
+│ └── userContact.ts ← 追加：API 取得・state 管理
+├── types/contact.ts
+├── components/
+└── pages/
+
 ## 機能一覧
 
 ### 必須機能
