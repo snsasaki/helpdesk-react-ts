@@ -35,7 +35,13 @@ function ContactItem({ contact, onEdit, onDelete }: Props) {
   const status = statusConfig[contact.status];
 
   return (
-    <Card variant="outlined" sx={{ mb: 2 }}>
+    <Card
+      variant="outlined"
+      sx={{
+        mb: 2,
+        boxShadow: 2,
+      }}
+    >
       <CardContent>
         <Stack spacing={1}>
           <Stack
