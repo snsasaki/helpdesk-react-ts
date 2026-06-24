@@ -29,8 +29,8 @@ export const contactApi = {
   },
 
   create: async (input: ContactFormData): Promise<Contact> => {
-    const response = await api.post<Contact>("/api/contacts", input);
-    return response.data;
+    const response = await api.post<ContactResponse>("/api/contacts", input);
+    return toContact(response.data);
   },
 
   updateStatus: async (id: number, status: ContactStatus): Promise<Contact> => {
