@@ -1,7 +1,7 @@
 import { api } from "../lib/api";
 import type { Contact, ContactFormData, ContactStatus } from "../types/Contact";
 
-export const ContactApi = {
+export const contactApi = {
   getAll: async (status?: string): Promise<Contact[]> => {
     const params = status && status !== "all" ? { status } : {};
     const response = await api.get<Contact[]>("/api/contacts", { params });
