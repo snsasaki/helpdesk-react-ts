@@ -34,8 +34,10 @@ export const contactApi = {
   },
 
   updateStatus: async (id: number, status: ContactStatus): Promise<Contact> => {
-    const response = await api.put<Contact>(`/api/contacts/${id}`, { status });
-    return response.data;
+    const response = await api.put<ContactResponse>(`/api/contacts/${id}`, {
+      status,
+    });
+    return toContact(response.data);
   },
 
   delete: async (id: number): Promise<void> => {

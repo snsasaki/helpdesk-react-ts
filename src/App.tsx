@@ -8,7 +8,7 @@ import type {
 
 import ContactCreatePage from "./pages/ContactCreatePage";
 import ContactListPage from "./pages/ContactListPage";
-// import ContactDetailPage from "./pages/ContactDetailPage";
+import ContactDetailPage from "./pages/ContactDetailPage";
 
 import { Button, Container, Paper, Stack, Typography } from "@mui/material";
 
@@ -21,7 +21,7 @@ type StatusFilter = ContactStatus | "all";
 
 function App() {
   const [currentPage, setCurrentPage] = useState<Page>("list");
-  // const [selectedContact, setSelectedContact] = useState<Contact | null>(null);
+  const [selectedContact, setSelectedContact] = useState<Contact | null>(null);
 
   const [contacts, setContacts] = useState<Contact[]>([]);
   const [statusFilter, setStatusFilter] = useState<StatusFilter>("all");
@@ -51,6 +51,29 @@ function App() {
 
     setContacts((prevContacts) => [createContact, ...prevContacts]);
     setCurrentPage("list");
+  };
+
+  const handleSelectContact = (id: number) => {
+    const contact = contacts.find((contact) => contact.id === id);
+
+    if (!contact) {
+      return;
+    }
+
+    setSelectedContact(contact);
+    setCurrentPage("detail");
+  };
+
+  const handleStatusChange = async (id: number, status: ContactStatus) => {
+    const updatedContact = await contactApi.updateStatus(id, status);
+
+    setContacts((prevContacts) =>
+      prevContacts.map((contact) =>
+        contact.id === id ? updatedContact : contact,
+      ),
+    );
+
+    setSelectedContact(updatedContact);
   };
 
   const handleDelete = async (id: number) => {
@@ -112,13 +135,20 @@ function App() {
               sortOrder={sortOrder}
               onFilterChange={setStatusFilter}
               onSortOrderChange={setSortOrder}
-              // TODO: 変更予定
-              onEdit={(id) => console.log("detail", id)}
+              onEdit={handleSelectContact}
               onDelete={handleDelete}
             />
           )}
 
           {currentPage === "create" && <ContactCreatePage onAdd={handleAdd} />}
+
+          {currentPage === "detail" && selectedContact && (
+            <ContactDetailPage
+              contact={selectedContact}
+              onBack={() => setCurrentPage("list")}
+              onStatusChange={handleStatusChange}
+            />
+          )}
         </Stack>
       </Paper>
     </Container>
