@@ -22,6 +22,7 @@ import {
 
 import { contactApi } from "./api/contacts";
 import { useSnackbar } from "./hooks/useSnackbar";
+import axios from "axios";
 
 // ページ切り替え用types
 type Page = "list" | "detail" | "create";
@@ -49,7 +50,20 @@ function App() {
         const fetchedContacts = await contactApi.getAll(statusFilter);
         setContacts(fetchedContacts);
       } catch (e) {
-        setErrorMessage("お問い合わせ情報を取得できませんでした。");
+        if (axios.isAxiosError(e)) {
+          const status = e.response?.status;
+          if (status === 404) {
+            setErrorMessage("お問い合わせ情報を取得できませんでした。");
+          } else if (status === 500) {
+            setErrorMessage(
+              "サーバーエラーが発生しました。しばらく待ってから再試行してください",
+            );
+          } else {
+            setErrorMessage(`通信エラー: ${e.message}`);
+          }
+        } else {
+          setErrorMessage("予期しないエラーが発生しました");
+        }
       } finally {
         setIsLoading(false);
       }
