@@ -77,16 +77,6 @@ function App() {
     <Container maxWidth="lg" sx={{ py: 6 }}>
       <Paper elevation={2} sx={{ p: 4, borderRadius: 3 }}>
         <Stack spacing={3}>
-          {/* TODO: 削除予定 */}
-          <div>
-            <Typography variant="h5" component="p">
-              接続確認
-            </Typography>
-            <Typography color="text.secondary">
-              取得件数: {contacts.length}
-            </Typography>
-          </div>
-
           <Button
             variant={currentPage === "list" ? "contained" : "outlined"}
             onClick={() => setCurrentPage("list")}
