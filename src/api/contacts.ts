@@ -1,6 +1,24 @@
 import { api } from "../lib/api";
 import type { Contact, ContactFormData, ContactStatus } from "../types/Contact";
 
+export type ContactResponse = {
+  id: number;
+  title: string;
+  detail: string;
+  status: ContactStatus;
+  created_at: string;
+  updated_at: string;
+};
+
+// Reactが扱いやすいように変換する関数
+const toContact = (contact: ContactResponse): Contact => ({
+  id: contact.id,
+  title: contact.title,
+  detail: contact.detail,
+  status: contact.status,
+  createdAt: contact.created_at,
+});
+
 export const contactApi = {
   getAll: async (status?: string): Promise<Contact[]> => {
     const params = status && status !== "all" ? { status } : {};
