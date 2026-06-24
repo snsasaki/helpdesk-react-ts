@@ -22,8 +22,10 @@ const toContact = (contact: ContactResponse): Contact => ({
 export const contactApi = {
   getAll: async (status?: string): Promise<Contact[]> => {
     const params = status && status !== "all" ? { status } : {};
-    const response = await api.get<Contact[]>("/api/contacts", { params });
-    return response.data;
+    const response = await api.get<ContactResponse[]>("/api/contacts", {
+      params,
+    });
+    return response.data.map(toContact);
   },
 
   create: async (input: ContactFormData): Promise<Contact> => {
