@@ -10,9 +10,18 @@ import ContactCreatePage from "./pages/ContactCreatePage";
 import ContactListPage from "./pages/ContactListPage";
 import ContactDetailPage from "./pages/ContactDetailPage";
 
-import { Button, Container, Paper, Stack, Typography } from "@mui/material";
+import {
+  Button,
+  Container,
+  Paper,
+  Stack,
+  Typography,
+  Alert,
+  Snackbar,
+} from "@mui/material";
 
 import { contactApi } from "./api/contacts";
+import { useSnackbar } from "./hooks/useSnackbar";
 
 // ページ切り替え用types
 type Page = "list" | "detail" | "create";
@@ -20,6 +29,8 @@ type Page = "list" | "detail" | "create";
 type StatusFilter = ContactStatus | "all";
 
 function App() {
+  const { snackbar, showSnackbar, closeSnackbar } = useSnackbar();
+
   const [currentPage, setCurrentPage] = useState<Page>("list");
   const [selectedContact, setSelectedContact] = useState<Contact | null>(null);
 
@@ -87,6 +98,8 @@ function App() {
     setContacts((prevContacts) =>
       prevContacts.filter((contact) => contact.id !== id),
     );
+
+    showSnackbar("削除しました");
   };
 
   const sortedContacts = [...contacts].sort((a, b) => {
@@ -98,6 +111,21 @@ function App() {
 
   return (
     <Container maxWidth="lg" sx={{ py: 6 }}>
+      <Snackbar
+        open={snackbar.open}
+        autoHideDuration={3000}
+        onClose={closeSnackbar}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      >
+        <Alert
+          onClose={closeSnackbar}
+          severity={snackbar.severity}
+          variant="filled"
+          sx={{ width: "100%" }}
+        >
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
       <Paper elevation={2} sx={{ p: 4, borderRadius: 3 }}>
         <Stack spacing={3}>
           <Button
