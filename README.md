@@ -7,6 +7,7 @@
 
 ## プロジェクト構成
 
+```shell
 src/
 ├── lib/
 │ └── api.ts ← 追加：axios インスタンス
@@ -17,6 +18,7 @@ src/
 ├── types/contact.ts
 ├── components/
 └── pages/
+```
 
 ## 機能一覧
 
