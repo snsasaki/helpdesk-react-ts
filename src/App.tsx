@@ -62,6 +62,8 @@ function App() {
 
     setContacts((prevContacts) => [createContact, ...prevContacts]);
     setCurrentPage("list");
+
+    showSnackbar("お問い合わせを作成しました");
   };
 
   const handleSelectContact = (id: number) => {
@@ -85,12 +87,15 @@ function App() {
     );
 
     setSelectedContact(updatedContact);
+
+    showSnackbar("ステータスを更新しました");
   };
 
   const handleDelete = async (id: number) => {
     const confirmed = window.confirm("二言はないな？");
 
     if (!confirmed) {
+      showSnackbar("削除できませんでした。", "error");
       return;
     }
     await contactApi.delete(id);
@@ -115,13 +120,16 @@ function App() {
         open={snackbar.open}
         autoHideDuration={3000}
         onClose={closeSnackbar}
-        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
       >
         <Alert
           onClose={closeSnackbar}
           severity={snackbar.severity}
           variant="filled"
-          sx={{ width: "100%" }}
+          sx={{
+            width: "100%",
+            boxShadow: 3,
+          }}
         >
           {snackbar.message}
         </Alert>
