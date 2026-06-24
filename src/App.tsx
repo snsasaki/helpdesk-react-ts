@@ -53,6 +53,19 @@ function App() {
     setCurrentPage("list");
   };
 
+  const handleDelete = async (id: number) => {
+    const confirmed = window.confirm("二言はないな？");
+
+    if (!confirmed) {
+      return;
+    }
+    await contactApi.delete(id);
+
+    setContacts((prevContacts) =>
+      prevContacts.filter((contact) => contact.id !== id),
+    );
+  };
+
   const sortedContacts = [...contacts].sort((a, b) => {
     const aTime = new Date(a.createdAt).getTime();
     const bTime = new Date(b.createdAt).getTime();
@@ -111,8 +124,7 @@ function App() {
               onSortOrderChange={setSortOrder}
               // TODO: 変更予定
               onEdit={(id) => console.log("detail", id)}
-              // TODO: 変更予定
-              onDelete={(id) => console.log("delete", id)}
+              onDelete={handleDelete}
             />
           )}
 
