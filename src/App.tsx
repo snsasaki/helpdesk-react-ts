@@ -4,8 +4,6 @@ import type {
   ContactStatus,
   SortOrder,
   // ContactFormData,
-  // ContactStatus,
-  // SortOrder,
 } from "./types/Contact";
 
 // import ContactCreatePage from "./pages/ContactCreatePage";
@@ -32,9 +30,24 @@ function App() {
   const [contacts, setContacts] = useState<Contact[]>([]);
   const [statusFilter, setStatusFilter] = useState<StatusFilter>("all");
   const [sortOrder, setSortOrder] = useState<SortOrder>("newest");
+  const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
-    contactApi.getAll(statusFilter).then(setContacts);
+    const fetchContacts = async () => {
+      try {
+        setIsLoading(true);
+        setErrorMessage("");
+
+        const fetchedContacts = await contactApi.getAll(statusFilter);
+        setContacts(fetchedContacts);
+      } catch (e) {
+        setErrorMessage("お問い合わせ情報を取得できませんでした。");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchContacts();
   }, [statusFilter]);
 
   const sortedContacts = [...contacts].sort((a, b) => {
@@ -48,6 +61,7 @@ function App() {
     <Container maxWidth="lg" sx={{ py: 6 }}>
       <Paper elevation={2} sx={{ p: 4, borderRadius: 3 }}>
         <Stack spacing={3}>
+          {/* TODO: 削除予定 */}
           <div>
             <Typography variant="h5" component="p">
               接続確認
@@ -56,6 +70,14 @@ function App() {
               取得件数: {contacts.length}
             </Typography>
           </div>
+
+          {isLoading && (
+            <Typography color="text.secondary">読み込み中...</Typography>
+          )}
+
+          {errorMessage && (
+            <Typography color="error">{errorMessage}</Typography>
+          )}
 
           <ContactListPage
             contacts={sortedContacts}
