@@ -79,6 +79,12 @@ function App() {
             <Typography color="error">{errorMessage}</Typography>
           )}
 
+          {contacts.length === 0 && (
+            <Typography color="text.secondary">
+              お問い合わせはありません。
+            </Typography>
+          )}
+
           <ContactListPage
             contacts={sortedContacts}
             statusFilter={statusFilter}
