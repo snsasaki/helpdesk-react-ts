@@ -25,6 +25,7 @@ import { useSnackbar } from "./hooks/useSnackbar";
 import axios from "axios";
 import type { User } from "./types/auth";
 import { LoginForm } from "./components/LoginForm";
+import { useCookies } from "react-cookie";
 
 // ページ切り替え用types
 type Page = "list" | "detail" | "create";
@@ -44,7 +45,8 @@ function App() {
   const [errorMessage, setErrorMessage] = useState("");
 
   const [user, setUser] = useState<User | null>(null);
-  const [token, setToken] = useState<string | null>(null);
+
+  const [cookies, setCookie] = useCookies(["token"]);
 
   useEffect(() => {
     const fetchContacts = async () => {
@@ -78,7 +80,7 @@ function App() {
 
   const handleLoggedIn = (loggedInUser: User, authToken: string) => {
     setUser(loggedInUser);
-    setToken(authToken);
+    setCookie("token", authToken);
   };
 
   if (!user) {
@@ -166,7 +168,9 @@ function App() {
         <Stack spacing={3}>
           <div>
             <p>ようこそ、{user.name} さん</p>
-            {token && <p>token: {token.substring(0, 10)}...</p>}
+
+            {/* TODO: 削除予定 */}
+            {cookies && <p>cookie: {cookies.token}...</p>}
           </div>
           <Button
             variant={currentPage === "list" ? "contained" : "outlined"}
