@@ -23,6 +23,8 @@ import {
 import { contactApi } from "./api/contacts";
 import { useSnackbar } from "./hooks/useSnackbar";
 import axios from "axios";
+import type { User } from "./types/auth";
+import { LoginForm } from "./components/LoginForm";
 
 // ページ切り替え用types
 type Page = "list" | "detail" | "create";
@@ -40,6 +42,9 @@ function App() {
   const [sortOrder, setSortOrder] = useState<SortOrder>("newest");
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+
+  const [user, setUser] = useState<User | null>(null);
+  const [token, setToken] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchContacts = async () => {
@@ -70,6 +75,15 @@ function App() {
     };
     fetchContacts();
   }, [statusFilter]);
+
+  const handleLoggedIn = (loggedInUser: User, authToken: string) => {
+    setUser(loggedInUser);
+    setToken(authToken);
+  };
+
+  if (!user) {
+    return <LoginForm onLoggedIn={handleLoggedIn} />;
+  }
 
   const handleAdd = async (input: ContactFormData) => {
     const createContact = await contactApi.create(input);
@@ -150,6 +164,10 @@ function App() {
       </Snackbar>
       <Paper elevation={2} sx={{ p: 4, borderRadius: 3 }}>
         <Stack spacing={3}>
+          <div>
+            <p>ようこそ、{user.name} さん</p>
+            {token && <p>token: {token.substring(0, 10)}...</p>}
+          </div>
           <Button
             variant={currentPage === "list" ? "contained" : "outlined"}
             onClick={() => setCurrentPage("list")}
