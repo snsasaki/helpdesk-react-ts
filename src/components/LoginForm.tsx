@@ -1,6 +1,5 @@
 import { useForm } from "react-hook-form";
 import axios from "axios";
-import { authApi } from "../api/auth";
 import type { LoginInput, User } from "../types/auth";
 
 type LaravelValidationError = {
@@ -8,10 +7,10 @@ type LaravelValidationError = {
 };
 
 type LoginFormProps = {
-  onLoggedIn: (user: User, token: string) => void;
+  onLogin: (input: LoginInput) => Promise<User>;
 };
 
-export function LoginForm({ onLoggedIn }: LoginFormProps) {
+export function LoginForm({ onLogin }: LoginFormProps) {
   const {
     register,
     handleSubmit,
@@ -21,8 +20,7 @@ export function LoginForm({ onLoggedIn }: LoginFormProps) {
 
   const onSubmit = async (data: LoginInput) => {
     try {
-      const { user, token } = await authApi.login(data);
-      onLoggedIn(user, token);
+      await onLogin(data);
     } catch (e) {
       if (axios.isAxiosError(e) && e.response?.status === 422) {
         const body = e.response.data as LaravelValidationError;

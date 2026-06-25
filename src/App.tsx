@@ -23,9 +23,10 @@ import {
 import { contactApi } from "./api/contacts";
 import { useSnackbar } from "./hooks/useSnackbar";
 import axios from "axios";
-import type { User } from "./types/auth";
+// import type { User } from "./types/auth";
 import { LoginForm } from "./components/LoginForm";
-import { useCookies } from "react-cookie";
+import { useAuth } from "./hooks/useAuth";
+// import { useCookies } from "react-cookie";
 
 // ページ切り替え用types
 type Page = "list" | "detail" | "create";
@@ -33,6 +34,13 @@ type Page = "list" | "detail" | "create";
 type StatusFilter = ContactStatus | "all";
 
 function App() {
+  const {
+    user,
+    isLoggedIn,
+    // isLoading,
+    login,
+    logout,
+  } = useAuth();
   const { snackbar, showSnackbar, closeSnackbar } = useSnackbar();
 
   const [currentPage, setCurrentPage] = useState<Page>("list");
@@ -44,9 +52,9 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
-  const [user, setUser] = useState<User | null>(null);
+  // const [user, setUser] = useState<User | null>(null);
 
-  const [cookies, setCookie] = useCookies(["token"]);
+  // const [cookies, setCookie] = useCookies(["token"]);
 
   useEffect(() => {
     const fetchContacts = async () => {
@@ -78,13 +86,8 @@ function App() {
     fetchContacts();
   }, [statusFilter]);
 
-  const handleLoggedIn = (loggedInUser: User, authToken: string) => {
-    setUser(loggedInUser);
-    setCookie("token", authToken);
-  };
-
   if (!user) {
-    return <LoginForm onLoggedIn={handleLoggedIn} />;
+    return <LoginForm onLogin={login} />;
   }
 
   const handleAdd = async (input: ContactFormData) => {
@@ -144,6 +147,12 @@ function App() {
     return sortOrder === "newest" ? bTime - aTime : aTime - bTime;
   });
 
+  if (isLoading) return <p>読み込み中...</p>;
+
+  if (!isLoggedIn) {
+    return <LoginForm onLogin={login} />;
+  }
+
   return (
     <Container maxWidth="lg" sx={{ py: 6 }}>
       <Snackbar
@@ -167,10 +176,11 @@ function App() {
       <Paper elevation={2} sx={{ p: 4, borderRadius: 3 }}>
         <Stack spacing={3}>
           <div>
-            <p>ようこそ、{user.name} さん</p>
+            <span>ようこそ、{user!.name} さん</span>
+            <button onClick={logout}>ログアウト</button>
 
             {/* TODO: 削除予定 */}
-            {cookies && <p>cookie: {cookies.token}...</p>}
+            {/* {cookies && <p>cookie: {cookies.token}...</p>} */}
           </div>
           <Button
             variant={currentPage === "list" ? "contained" : "outlined"}
