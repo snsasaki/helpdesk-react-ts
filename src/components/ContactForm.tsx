@@ -29,7 +29,7 @@ function ContactForm({ onAdd }: Props) {
       <Stack spacing={2}>
         <TextField
           label="タイトル"
-          placeholder="お問い合わせのタイトルを入力してください"
+          placeholder="例：パソコンがつかない"
           fullWidth
           required
           error={Boolean(errors.title)}
@@ -45,7 +45,7 @@ function ContactForm({ onAdd }: Props) {
 
         <TextField
           label="お問い合わせ内容"
-          placeholder="お問い合わせ内容を入力してください"
+          placeholder="例：今朝からWindowsPCの調子が悪く、シャットダウンしたら電源がつかなくなってしまいました。"
           fullWidth
           multiline
           minRows={4}
