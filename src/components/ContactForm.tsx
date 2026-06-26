@@ -32,6 +32,11 @@ function ContactForm({ onAdd }: Props) {
           placeholder="例：パソコンがつかない"
           fullWidth
           required
+          sx={{
+            "& .MuiFormLabel-asterisk": {
+              color: "red",
+            },
+          }}
           error={Boolean(errors.title)}
           helperText={errors.title?.message}
           {...register("title", {
