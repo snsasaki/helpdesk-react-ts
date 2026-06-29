@@ -1,6 +1,15 @@
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import type { LoginInput, User } from "../types/auth";
+import {
+  Alert,
+  Box,
+  Button,
+  Paper,
+  Stack,
+  TextField,
+  Typography,
+} from "@mui/material";
 
 type LaravelValidationError = {
   errors: Record<string, string[]>;
@@ -16,7 +25,12 @@ export function LoginForm({ onLogin }: LoginFormProps) {
     handleSubmit,
     setError,
     formState: { errors, isSubmitting },
-  } = useForm<LoginInput>();
+  } = useForm<LoginInput>({
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
 
   const onSubmit = async (data: LoginInput) => {
     try {
@@ -30,41 +44,84 @@ export function LoginForm({ onLogin }: LoginFormProps) {
             message: messages[0],
           });
         });
+
+        return;
       }
+
+      setError("root", {
+        type: "server",
+        message:
+          "ログインに失敗しました。メールアドレスとパスワードを確認してください。",
+      });
     }
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <h2>ログイン</h2>
+    <Box
+      sx={{
+        minHeight: "100svh",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        px: 2,
+        bgcolor: "background.default",
+      }}
+    >
+      <Paper
+        component="form"
+        onSubmit={handleSubmit(onSubmit)}
+        elevation={3}
+        sx={{
+          width: "100%",
+          maxWidth: 420,
+          p: 4,
+          borderRadius: 3,
+        }}
+      >
+        <Stack spacing={3}>
+          <Stack spacing={1}>
+            <Typography variant="h4" component="h1">
+              ログイン
+            </Typography>
+          </Stack>
 
-      <div>
-        <label>メールアドレス</label>
-        <input
-          type="email"
-          {...register("email", {
-            required: "メールアドレスを入力してください",
-          })}
-        />
-        {errors.email && <p style={{ color: "red" }}>{errors.email.message}</p>}
-      </div>
+          {errors.root?.message && (
+            <Alert severity="error">{errors.root.message}</Alert>
+          )}
 
-      <div>
-        <label>パスワード</label>
-        <input
-          type="password"
-          {...register("password", {
-            required: "パスワードを入力してください",
-          })}
-        />
-        {errors.password && (
-          <p style={{ color: "red" }}>{errors.password.message}</p>
-        )}
-      </div>
+          <TextField
+            label="メールアドレス"
+            type="email"
+            fullWidth
+            error={Boolean(errors.email)}
+            helperText={errors.email?.message}
+            {...register("email", {
+              required: "メールアドレスを入力してください",
+            })}
+          />
 
-      <button type="submit" disabled={isSubmitting}>
-        {isSubmitting ? "ログイン中..." : "ログイン"}
-      </button>
-    </form>
+          <TextField
+            label="パスワード"
+            type="password"
+            fullWidth
+            error={Boolean(errors.password)}
+            helperText={errors.password?.message}
+            {...register("password", {
+              required: "パスワードを入力してください",
+            })}
+          />
+
+          <Button
+            type="submit"
+            variant="contained"
+            size="large"
+            disabled={isSubmitting}
+            fullWidth
+          >
+            {isSubmitting ? "ログイン中..." : "ログイン"}
+          </Button>
+        </Stack>
+      </Paper>
+    </Box>
   );
 }
